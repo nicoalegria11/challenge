@@ -1,0 +1,4 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/challengebynar/prediction_flight', '.']
+images: ['gcr.io/challengebynar/prediction_flight']

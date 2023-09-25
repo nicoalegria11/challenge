@@ -1,0 +1,27 @@
+name: 'Continuous Delivery'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: challengebynar
+
+    - name: Authenticate with Google Cloud
+      run: gcloud auth activate-service-account --key-file=service-account-key.json
+
+    - name: Build and Deploy
+      run: |
+        gcloud builds submit --config cloudbuild.yaml
+        gcloud app deploy
