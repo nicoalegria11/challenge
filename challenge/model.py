@@ -131,7 +131,7 @@ class DelayModel:
 
     def _select_top_features(self, x_train: pd.DataFrame, y_train: pd.DataFrame, top_features: int) -> List[str]:
         xgb_model = xgb.XGBClassifier(random_state=1, learning_rate=0.01)
-        xgb_model.fit(x_train, y_train)
+        xgb_model.fit(x_train, y_train, eval_metric="error")
         f_scores = xgb_model.get_booster().get_score()
         top_features_keys = [feature for feature, _ in sorted(f_scores.items(), key=lambda x: x[1], reverse=True)[:top_features]]
         return top_features_keys

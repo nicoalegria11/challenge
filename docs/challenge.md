@@ -26,4 +26,8 @@ It was executed smoothly, achieving accurate predictions at least for the data p
 
 ### Part III
 
+**URL**: https://challengebynar.rj.r.appspot.com/
+
 ### Part IV
+
+I was unable to complete this part because, even though we had 5 days to complete the challenge, I had a weekend filled with responsibilities and couldn't allocate enough time to the task.

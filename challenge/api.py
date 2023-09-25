@@ -1,18 +1,11 @@
 import fastapi
 import pandas as pd
-from typing import List, Optional
 from challenge.model import DelayModel
+from challenge.flights import FlightInput
 # from model import DelayModel
-from pydantic import BaseModel
+# from flights import FlightInput
 import os
-
-class Flight(BaseModel):
-    MES: Optional[int] = None
-    TIPOVUELO: Optional[str] = None
-    OPERA: Optional[str] = None
-
-class FlightInput(BaseModel):
-    flights: List[Flight]
+import uvicorn 
 
 data_dir = os.path.join(os.path.dirname(__file__), '..', 'data')
 csv_file_path = os.path.join(data_dir, 'data.csv')
@@ -43,3 +36,7 @@ async def predict(data: FlightInput) -> dict:
         delay_prediction = load_model.predict(panda)
         response.append(int(delay_prediction[0]))
     return {"predict": response}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
+    # uvicorn challenge.api:app --reload desde el entorno virtual
