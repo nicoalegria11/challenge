@@ -5,7 +5,6 @@ import warnings
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
-from sklearn.metrics import classification_report
 import xgboost as xgb
 from typing import Tuple, Union, List
 
@@ -81,7 +80,24 @@ class DelayModel:
             print("Model not trained. Returning list of zeros.")
             return [0]*features.shape[0]
         else:
-            self._model.predict(features[self._top_features_data])
+            features = pd.concat([
+                pd.get_dummies(features['OPERA'], prefix = 'OPERA'),
+                pd.get_dummies(features['TIPOVUELO'], prefix = 'TIPOVUELO'), 
+                pd.get_dummies(features['MES'], prefix = 'MES')], 
+            axis = 1
+            )
+            instance = self.preprocess_test_data(features)
+            prediction = self._model.predict(instance)
+            return prediction
+
+    def preprocess_test_data(self, features: pd.DataFrame) -> pd.DataFrame:
+        flight_data = pd.DataFrame(columns = self._top_features_data, index = [0])
+        for feature in self._top_features_data:
+            if feature in features.columns:
+                flight_data[feature] = True
+            else:
+                flight_data[feature] = False
+        return flight_data
 
     def _determine_period_of_day(self, date_str: str) -> str:
         date_time = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S').time()
@@ -114,11 +130,9 @@ class DelayModel:
         return ((departure_date - arrival_date).total_seconds()) / 60
 
     def _select_top_features(self, x_train: pd.DataFrame, y_train: pd.DataFrame, top_features: int) -> List[str]:
-        # Entrenar el modelo XGBoost
         xgb_model = xgb.XGBClassifier(random_state=1, learning_rate=0.01)
         xgb_model.fit(x_train, y_train)
-        # Obtener los puntajes de características
         f_scores = xgb_model.get_booster().get_score()
-        # Seleccionar las mejores características
         top_features_keys = [feature for feature, _ in sorted(f_scores.items(), key=lambda x: x[1], reverse=True)[:top_features]]
         return top_features_keys
+    
