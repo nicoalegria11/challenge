@@ -1,5 +1,6 @@
 import unittest
 import pandas as pd
+import os
 
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
@@ -7,18 +8,16 @@ from challenge.model import DelayModel
 
 class TestModel(unittest.TestCase):
 
-    FEATURES_COLS = [
-        "OPERA_Latin American Wings", 
-        "MES_7",
-        "MES_10",
-        "OPERA_Grupo LATAM",
-        "MES_12",
-        "TIPOVUELO_I",
-        "MES_4",
-        "MES_11",
-        "OPERA_Sky Airline",
-        "OPERA_Copa Air"
-    ]
+    FEATURES_COLS = ['OPERA_Latin American Wings',
+            'MES_10',
+            'MES_7',
+            'OPERA_Grupo LATAM',
+            'MES_6',
+            'MES_4',
+            'MES_8',
+            'MES_12',
+            'OPERA_Sky Airline',
+            'TIPOVUELO_I']
 
     TARGET_COL = [
         "delay"
@@ -28,9 +27,10 @@ class TestModel(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.model = DelayModel()
-        self.data = pd.read_csv(filepath_or_buffer="../data/data.csv")
+        data_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'data')
+        csv_file_path = os.path.join(data_dir, 'data.csv')
+        self.data = pd.read_csv(filepath_or_buffer=csv_file_path, low_memory=False)
         
-
     def test_model_preprocess_for_training(
         self
     ):

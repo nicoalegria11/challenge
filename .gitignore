@@ -1,0 +1,4 @@
+.venv
+/reports
+.coverage
+.DS_Store
