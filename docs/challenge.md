@@ -30,4 +30,4 @@ It was executed smoothly, achieving accurate predictions at least for the data p
 
 ### Part IV
 
-I was unable to complete this part because, even though we had 5 days to complete the challenge, I had a weekend filled with responsibilities and couldn't allocate enough time to the task.
+I was unable to complete this part because, even though we had 5 days to complete the challenge, I had a weekend filled with responsibilities and couldn't allocate enough time to the task. I managed to work on the branch, but I haven't merged it into dev because I didn't have a chance to test it (5-partIV-CI/CD-integration)
